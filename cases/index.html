@@ -507,20 +507,20 @@
 
   <div class="tabs-wrap">
     <div class="tabs" role="tablist" aria-label="案例分类">
-      <button class="tab" id="tab-ai" role="tab" aria-selected="false" aria-controls="panel-ai" tabindex="-1">AI智能软件</button>
-      <button class="tab" id="tab-space" role="tab" aria-selected="true" aria-controls="panel-space">文化展示空间</button>
+      <button class="tab" id="tab-ai" role="tab" aria-selected="true" aria-controls="panel-ai">AI智能软件</button>
+      <button class="tab" id="tab-space" role="tab" aria-selected="false" aria-controls="panel-space" tabindex="-1">文化展示空间</button>
       <button class="tab" id="tab-video" role="tab" aria-selected="false" aria-controls="panel-video" tabindex="-1">影视与视频内容</button>
       <button class="tab" id="tab-event" role="tab" aria-selected="false" aria-controls="panel-event" tabindex="-1">活动与会务</button>
     </div>
   </div>
 
   <main>
-    <section class="panel" id="panel-ai" role="tabpanel" aria-labelledby="tab-ai" hidden>
+    <section class="panel" id="panel-ai" role="tabpanel" aria-labelledby="tab-ai">
       <div class="panel-heading"><h2>AI智能软件</h2><p>AI INTELLIGENCE & SOFTWARE</p></div>
       <div class="empty-state"><div><strong>案例即将上线</strong><span>敬请期待</span></div></div>
     </section>
 
-    <section class="panel" id="panel-space" role="tabpanel" aria-labelledby="tab-space">
+    <section class="panel" id="panel-space" role="tabpanel" aria-labelledby="tab-space" hidden>
       <div class="panel-heading"><h2>文化展示空间</h2><p>CULTURAL EXHIBITION SPACE · 02 PROJECTS</p></div>
       <div class="case-list">
         <article class="case-card" data-case-title="六安烟草安全文化宣教室">
@@ -606,8 +606,14 @@
     (function () {
       var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
       var panels = Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]'));
+      var tabByHash = {
+        '#ai': document.getElementById('tab-ai'),
+        '#space': document.getElementById('tab-space'),
+        '#video': document.getElementById('tab-video'),
+        '#event': document.getElementById('tab-event')
+      };
       tabs.forEach(function (tab, index) {
-        tab.addEventListener('click', function () { activateTab(tab); });
+        tab.addEventListener('click', function () { activateTab(tab, true); });
         tab.addEventListener('keydown', function (event) {
           var nextIndex = index;
           if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % tabs.length;
@@ -616,18 +622,27 @@
           else if (event.key === 'End') nextIndex = tabs.length - 1;
           else return;
           event.preventDefault();
-          activateTab(tabs[nextIndex]);
+          activateTab(tabs[nextIndex], true);
           tabs[nextIndex].focus();
         });
       });
-      function activateTab(tab) {
+      function getTabHash(tab) {
+        return '#' + tab.id.replace('tab-', '');
+      }
+      function activateTab(tab, updateHash) {
         tabs.forEach(function (item) {
           var selected = item === tab;
           item.setAttribute('aria-selected', String(selected));
           item.tabIndex = selected ? 0 : -1;
         });
         panels.forEach(function (panel) { panel.hidden = panel.id !== tab.getAttribute('aria-controls'); });
+        if (updateHash && window.location.hash !== getTabHash(tab)) window.location.hash = getTabHash(tab);
       }
+      function activateFromHash() {
+        activateTab(tabByHash[window.location.hash.toLowerCase()] || tabs[0], false);
+      }
+      window.addEventListener('hashchange', activateFromHash);
+      activateFromHash();
 
       var galleries = [];
       document.querySelectorAll('.gallery').forEach(function (gallery) {
