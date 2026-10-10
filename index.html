@@ -739,39 +739,49 @@
     .service-tags { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11px; color: rgba(255,255,255,.46); }
 
     /* 05 / Work */
-    .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--hairline); }
-    .work-card {
-      min-height: 510px;
+    .work-nav {
       position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: clamp(24px, 3.4vw, 42px);
       overflow: hidden;
-      padding: clamp(28px, 4vw, 54px);
-      background: var(--surface);
-      color: var(--text);
-      text-decoration: none;
-    }
-    .work-card:focus-visible { outline: 2px solid var(--red); outline-offset: -4px; }
-    .work-art {
-      position: absolute;
-      inset: 0;
-      opacity: .6;
+      border: 1px solid var(--hairline);
       background:
-        radial-gradient(circle at 80% 20%, rgba(227,34,25,.22), transparent 24%),
-        linear-gradient(120deg, transparent 40%, rgba(255,255,255,.04) 41%, transparent 42%),
-        repeating-linear-gradient(90deg, transparent 0 58px, rgba(255,255,255,.025) 59px 60px);
-      transition: transform .8s var(--ease), opacity .35s ease;
+        linear-gradient(120deg, rgba(255,255,255,.035), transparent 44%),
+        repeating-linear-gradient(90deg, transparent 0 78px, rgba(255,255,255,.018) 79px 80px),
+        #090a0b;
     }
-    .work-card:nth-child(2) .work-art { transform: rotate(180deg); }
-    .work-card:nth-child(3) .work-art { background: radial-gradient(circle at 24% 76%, rgba(227,34,25,.2), transparent 27%), repeating-linear-gradient(45deg, transparent 0 48px, rgba(255,255,255,.025) 49px 50px); }
-    .work-card:nth-child(4) .work-art { background: linear-gradient(145deg, transparent 42%, rgba(227,34,25,.18) 43% 52%, transparent 53%), repeating-linear-gradient(0deg, transparent 0 68px, rgba(255,255,255,.025) 69px 70px); }
-    .work-card:hover .work-art { transform: scale(1.04); opacity: .9; }
-    .work-top, .work-bottom { position: relative; z-index: 1; }
-    .work-top { display: flex; justify-content: space-between; color: var(--dim); font-size: 11px; letter-spacing: .14em; }
-    .work-bottom { position: absolute; left: clamp(28px, 4vw, 54px); right: clamp(28px, 4vw, 54px); bottom: clamp(30px, 4vw, 52px); }
-    .work-bottom h3 { margin: 0 0 18px; max-width: 650px; font-size: clamp(28px, 3.2vw, 48px); line-height: 1.08; letter-spacing: -.05em; }
-    .work-bottom p { margin: 0; max-width: 620px; color: var(--muted); line-height: 1.75; }
-    .work-meta { margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--hairline); color: rgba(255,255,255,.45); font-size: 11px; letter-spacing: .05em; }
-    .work-meta span { display: inline-block; color: var(--red); transition: transform .25s ease; }
-    .work-card:hover .work-meta span, .work-card:focus-visible .work-meta span { transform: translateX(5px); }
+    .work-nav::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 26%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--red));
+      opacity: .8;
+    }
+    .work-tab {
+      position: relative;
+      z-index: 1;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 23px;
+      border: 1px solid rgba(255,255,255,.26);
+      color: rgba(255,255,255,.76);
+      background: rgba(5,6,7,.62);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: .02em;
+      transition: color .24s ease, border-color .24s ease, background .24s ease;
+    }
+    .work-tab:hover { color: #fff; border-color: rgba(255,255,255,.56); background: rgba(255,255,255,.055); }
+    .work-tab:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    .work-tab[aria-current="page"] { border-color: var(--red); background: var(--red); color: #fff; }
 
     /* 06 / Process */
     .process-track { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); border-top: 1px solid var(--hairline); }
@@ -894,8 +904,9 @@
       .service { grid-template-columns: 56px minmax(0, 1fr); gap: 18px; min-height: 0; }
       .service-copy { grid-column: 2; }
       .service:hover { padding-left: 0; padding-right: 0; background: transparent; }
-      .work-grid { grid-template-columns: 1fr; }
-      .work-card { min-height: 440px; }
+      .work-nav { gap: 9px; padding: 18px; }
+      .work-tab { flex: 1 1 calc(50% - 9px); min-width: 0; padding: 0 12px; }
+      .work-tab:first-child { flex-basis: 100%; }
       .process-track { grid-template-columns: 1fr; }
       .process-step, .process-step + .process-step { min-height: 0; padding: 28px 0; border-left: 0; border-top: 1px solid var(--hairline); }
       .process-step:first-child { border-top: 0; }
@@ -1219,29 +1230,10 @@
       </div>
     </section>
 
-    <section class="chapter" id="services" aria-labelledby="services-title">
-      <div class="chapter-inner">
-        <header class="chapter-head reveal">
-          <p class="chapter-no">03 / CAPABILITY</p>
-          <h2 class="chapter-title" id="services-title">我们能做<span class="outline">什么</span></h2>
-          <p class="chapter-intro">四大业务版块，覆盖从一个想法到一个真正可以使用、传播与落地的产品。</p>
-        </header>
-
-        <div class="services-list reveal">
-          <article class="service"><span class="service-no">01 / AI</span><h3>AI智能软件</h3><div class="service-copy"><p>让 AI 真正进入业务，而不是为了 AI 而 AI。</p><div class="service-tags"><span>智能AI软件设计与开发</span><span>AI智能体</span><span>数字人 / 数字语音</span><span>本地大模型与知识库</span><span>企业AI应用</span><span>ITSM系统</span></div></div></article>
-          <article class="service"><span class="service-no">02 / SPACE</span><h3>文化展示空间</h3><div class="service-copy"><p>先解决内容，再解决表达，最后让空间真正落地。</p><div class="service-tags"><span>展厅设计施工一体化</span><span>广告标识标牌</span><span>企业形象墙设计制作</span><span>文化内容策划</span><span>平面 / 三维视觉</span></div></div></article>
-          <article class="service"><span class="service-no">03 / VIDEO</span><h3>影视与视频内容</h3><div class="service-copy"><p>传统影视制作能力 × AI 内容生产力。</p><div class="service-tags"><span>宣传片</span><span>短视频拍摄制作</span><span>品牌视频</span><span>微电影</span><span>脚本策划</span><span>AIGC视频</span></div></div></article>
-          <article class="service"><span class="service-no">04 / EVENT</span><h3>活动与会务</h3><div class="service-copy"><p>从创意策划到现场执行，让活动从“办完”变成“有效”。</p><div class="service-tags"><span>活动策划实施</span><span>会议 / 论坛 / 年会</span><span>发布会 / 庆典</span><span>品牌活动</span><span>公关活动</span><span>现场执行</span></div></div></article>
-        </div>
-
-
-      </div>
-    </section>
-
     <section class="chapter" id="team" aria-labelledby="team-title">
       <div class="chapter-inner">
         <header class="chapter-head reveal">
-          <p class="chapter-no">04 / THE TEAM</p>
+          <p class="chapter-no">03 / THE TEAM</p>
           <h2 class="chapter-title" id="team-title">十四位成员<br><span class="outline">一支战队</span></h2>
           <p class="chapter-intro"><strong>专业工种各就各位，项目能力彼此咬合。</strong><br>十四位实名成员齐整就位。</p>
         </header>
@@ -1349,6 +1341,23 @@
       </div>
     </section>
 
+    <section class="chapter" id="services" aria-labelledby="services-title">
+      <div class="chapter-inner">
+        <header class="chapter-head reveal">
+          <p class="chapter-no">04 / CAPABILITY</p>
+          <h2 class="chapter-title" id="services-title">我们能做<span class="outline">什么</span></h2>
+          <p class="chapter-intro">四大业务版块，覆盖从一个想法到一个真正可以使用、传播与落地的产品。</p>
+        </header>
+
+        <div class="services-list reveal">
+          <article class="service"><span class="service-no">01 / AI</span><h3>AI智能软件</h3><div class="service-copy"><p>让 AI 真正进入业务，而不是为了 AI 而 AI。</p><div class="service-tags"><span>智能AI软件设计与开发</span><span>AI智能体</span><span>数字人 / 数字语音</span><span>本地大模型与知识库</span><span>企业AI应用</span><span>ITSM系统</span></div></div></article>
+          <article class="service"><span class="service-no">02 / SPACE</span><h3>文化展示空间</h3><div class="service-copy"><p>先解决内容，再解决表达，最后让空间真正落地。</p><div class="service-tags"><span>展厅设计施工一体化</span><span>广告标识标牌</span><span>企业形象墙设计制作</span><span>文化内容策划</span><span>平面 / 三维视觉</span></div></div></article>
+          <article class="service"><span class="service-no">03 / VIDEO</span><h3>影视与视频内容</h3><div class="service-copy"><p>传统影视制作能力 × AI 内容生产力。</p><div class="service-tags"><span>宣传片</span><span>短视频拍摄制作</span><span>品牌视频</span><span>微电影</span><span>脚本策划</span><span>AIGC视频</span></div></div></article>
+          <article class="service"><span class="service-no">04 / EVENT</span><h3>活动与会务</h3><div class="service-copy"><p>从创意策划到现场执行，让活动从“办完”变成“有效”。</p><div class="service-tags"><span>活动策划实施</span><span>会议 / 论坛 / 年会</span><span>发布会 / 庆典</span><span>品牌活动</span><span>公关活动</span><span>现场执行</span></div></div></article>
+        </div>
+      </div>
+    </section>
+
     <section class="chapter" id="work" aria-labelledby="work-title">
       <div class="chapter-inner">
         <header class="chapter-head reveal">
@@ -1357,28 +1366,13 @@
           <p class="chapter-intro"><strong>真正的能力，不需要解释太多。</strong><br>让项目、过程与结果说话。</p>
         </header>
 
-        <div class="work-grid reveal" aria-label="案例中心分类入口">
-          <a class="work-card" href="cases/#ai" aria-label="查看AI智能软件案例">
-            <div class="work-art" aria-hidden="true"></div>
-            <div class="work-top"><span>AI / SOFTWARE</span><span>01</span></div>
-            <div class="work-bottom"><h3>AI智能软件</h3><p>智能软件与AI解决方案</p><div class="work-meta">进入案例中心 <span aria-hidden="true">→</span></div></div>
-          </a>
-          <a class="work-card" href="cases/#space" aria-label="查看文化展示空间案例">
-            <div class="work-art" aria-hidden="true"></div>
-            <div class="work-top"><span>SPACE / EXHIBITION</span><span>02</span></div>
-            <div class="work-bottom"><h3>文化展示空间</h3><p>展厅展馆与文化空间设计施工</p><div class="work-meta">进入案例中心 <span aria-hidden="true">→</span></div></div>
-          </a>
-          <a class="work-card" href="cases/#video" aria-label="查看影视与视频内容案例">
-            <div class="work-art" aria-hidden="true"></div>
-            <div class="work-top"><span>FILM / VIDEO</span><span>03</span></div>
-            <div class="work-bottom"><h3>影视与视频内容</h3><p>宣传片与短视频创作</p><div class="work-meta">进入案例中心 <span aria-hidden="true">→</span></div></div>
-          </a>
-          <a class="work-card" href="cases/#event" aria-label="查看活动与会务案例">
-            <div class="work-art" aria-hidden="true"></div>
-            <div class="work-top"><span>EVENT / CONFERENCE</span><span>04</span></div>
-            <div class="work-bottom"><h3>活动与会务</h3><p>活动策划与会议会务执行</p><div class="work-meta">进入案例中心 <span aria-hidden="true">→</span></div></div>
-          </a>
-        </div>
+        <nav class="work-nav reveal" aria-label="案例中心分类导航">
+          <a class="work-tab" href="cases/" aria-current="page">全部</a>
+          <a class="work-tab" href="cases/#ai">AI/软件</a>
+          <a class="work-tab" href="cases/#space">空间/展厅</a>
+          <a class="work-tab" href="cases/#video">影视/视频</a>
+          <a class="work-tab" href="cases/#event">活动/会务</a>
+        </nav>
       </div>
     </section>
 
