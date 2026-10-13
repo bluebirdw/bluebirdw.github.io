@@ -585,6 +585,40 @@
     }
     .team-grid--single { grid-template-columns: minmax(0, 1fr); }
     .team-grid > .team-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    @media (min-width: 1041px) {
+      .team-grid--single { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .team-grid > .team-card:last-child:nth-child(odd) { grid-column: auto; }
+      .team-grid:has(> .team-card:last-child:nth-child(odd))::after {
+        content: "";
+        position: relative;
+        min-height: 520px;
+        overflow: hidden;
+        background-color: var(--surface);
+        background-image:
+          radial-gradient(circle at 18% 24%, rgba(227,34,25,.72) 0 1px, rgba(227,34,25,.13) 2px 5px, transparent 9px),
+          radial-gradient(circle at 73% 67%, rgba(245,244,241,.55) 0 1px, rgba(245,244,241,.08) 2px 4px, transparent 8px),
+          radial-gradient(circle at 88% 18%, rgba(227,34,25,.42) 0 1px, transparent 6px),
+          linear-gradient(180deg, transparent 0 43%, rgba(227,34,25,.02) 47%, rgba(227,34,25,.2) 50%, rgba(245,244,241,.07) 50.5%, rgba(227,34,25,.02) 54%, transparent 58%),
+          linear-gradient(rgba(245,244,241,.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(245,244,241,.035) 1px, transparent 1px),
+          linear-gradient(135deg, rgba(245,244,241,.018), transparent 44%, rgba(227,34,25,.035));
+        background-size: auto, auto, auto, 100% 230%, 44px 44px, 44px 44px, auto;
+        background-position: 0 0, 0 0, 0 0, 0 -115%, 0 0, 0 0, 0 0;
+        box-shadow: inset 0 0 90px rgba(0,0,0,.38);
+        animation: teamVacantField 14s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+      }
+      @keyframes teamVacantField {
+        0% {
+          background-position: -8px 5px, 5px -3px, -4px 8px, 0 -115%, 0 0, 0 0, 0 0;
+          filter: brightness(.82);
+        }
+        48% { filter: brightness(1); }
+        100% {
+          background-position: 12px -8px, -10px 8px, 7px -5px, 0 115%, 44px 22px, 22px 44px, 0 0;
+          filter: brightness(.9);
+        }
+      }
+    }
     .team-card {
       position: relative;
       min-width: 0;
